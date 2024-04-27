@@ -26,7 +26,8 @@ import pandas as pd
 # myDataFrame = pd.DataFrame(columns = ['Rank', 'Game Title', 'Date', 'Avg. Players', 'Peak Players'])
 
 # Global vars
-isCollectingNewData = True
+no_pages = 8 # No games = no_pages * 25
+isCollectingNewData = None
 url_steamChartsBase = 'https://steamcharts.com'
 io_path = f'../Data Analysis- Are F2P Games the Solomn Future/list_of_games_data.pkl'
 list_of_games = []
@@ -60,7 +61,7 @@ def main():
 
     The bot is designed to handle 'unexpected' pages and varying page layouts.
     '''
-    getGamePrices()
+    getGamePrices() #InvalidArgumentException & Output current game
 
     # Read/write variables locally
     handleVariables()
@@ -77,11 +78,12 @@ def handleVariables():
         with open(io_path, 'rb') as f:
             list_of_games = pickle.load(f)
     
-
 def determineCollectNewData():
+    global isCollectingNewData
     if os.path.exists(io_path):
-        global isCollectingNewData
         isCollectingNewData = False
+    else:
+        isCollectingNewData = True
 
 def getHTML(url):
     page = requests.get(url)
@@ -98,7 +100,7 @@ def getSteamChartsGameList():
     if not isCollectingNewData:
         return 
 
-    for pageCounter in range(1,2):
+    for pageCounter in range(1, no_pages):
 
         # Acquire HTML
         url_steamChartsCurrent = f"{url_steamChartsBase}/top/p.{pageCounter}"
@@ -145,7 +147,7 @@ def getGameStats():
         # Add Game object to list 
         list_of_games.append(tempGameObject)
 
-def getGamePrices(list_of_games):
+def getGamePrices():
 
     # Base Case
     if not isCollectingNewData:
@@ -158,6 +160,7 @@ def getGamePrices(list_of_games):
     # For each game, get price (game name, price)
     for game in list_of_games:
         gameTitle = game.get_name()
+        print(f"Current Game: {gameTitle}")
 
         # Open site 
         driver.get('https://store.steampowered.com/')
@@ -171,11 +174,18 @@ def getGamePrices(list_of_games):
         input_element = driver.find_element(By.ID, 'store_nav_search_term')       
         input_element.send_keys(gameTitle + Keys.ENTER)
 
+
         # Isolate Steam page URL
         pageHTML = driver.page_source
-        url_index = pageHTML.find('store.steampowered.com/app')
-        messyURL = pageHTML[url_index:url_index + 200]
-        cleanURL  = '/'.join(messyURL.split('/')[:4]) + '/'
+        
+        # Base Case - Game doesn't exist
+        if '0 results match your search.' in pageHTML:
+            list_of_games.remove(game) #Remove game
+            continue
+        else:
+            url_index = pageHTML.find('store.steampowered.com/app')
+            messyURL = pageHTML[url_index:url_index + 200]
+            cleanURL  = '/'.join(messyURL.split('/')[:4]) + '/'
 
 
         # Go to Steam page and get price
@@ -209,7 +219,7 @@ def getGamePrices(list_of_games):
             cleanPrice = dirtyPrice.text
         
         # Update Price
-        game.set_price('£0' if cleanPrice == 'Free to Play' or cleanPrice == 'Free' else cleanPrice)
+        game.set_price('£0' if cleanPrice.lower() == 'free to play' or cleanPrice.lower() == 'free' else cleanPrice)
 
     driver.quit()
 
