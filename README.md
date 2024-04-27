@@ -1,5 +1,27 @@
 # Is the Loot-Box Business Model the Solemn Future of the Gaming Industry?
 
+- This exploration into this question 
+- Comprised/significant contribution is the generation of a large dataset, easily parsable (during data preparation phase):
+    - x games 
+    - generation time of x hours 
+- Information about:
+    - Price
+    - Historical player count 
+    - Features (1p, 2p, ingame purchases etc.)
+- Data acquired through 
+    - Web scraping 
+    - Botting (automated website interaction)
+- Data accessed through 
+    - .pkl - List of 'Game' objects with functions to export to dataframe
+    - .sql - Such data easily uploaded to databse in 2 tables 
+
+- Remainder of this research consists of usual data analysis steps:
+    - Data processing 
+    - Data analysis
+    - Data sharing
+
+
+
 ## Introduction 
 - Since early 10's, likely due to iPod and advancement of smart phones, seen an increasing number of f2p games with in-game purchases
 - High Profile examples 
@@ -27,6 +49,7 @@ The main challenges encountered throughout this project's lifetime are:
 - Data acquisition
     - Information of sales, popularity desireable for this research 
     - Info that companies keep secret from competitors and future clients to give them the edge
+    - Existing games on one list but not steam
 - x
 - x
 
