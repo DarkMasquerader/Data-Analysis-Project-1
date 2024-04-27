@@ -30,8 +30,10 @@ The main challenges encountered throughout this project's lifetime are:
 - x
 - x
 
-### Notable Techniques
--
+### Tools Used 
+- Python (Data Acquisition and Cleaning)
+- SQL 
+- 
 
 ### Document Structure 
 The structure of this document is as followed:
@@ -63,7 +65,9 @@ The structure of this document is as followed:
 - Python primary tool used for data acquisition 
 - Scraping:
     - https://steamcharts.com/top
+        Simple due to predictable URL and HTML pages; foregoing need of automtion tools and conditional checks
     - https://store.steampowered.com/
+        Not the case for steam, discussed more in challenges section
     
 - Steam charts used to get information on player count; take as indication of popularity for this project 
 - Official steam site is used to pricing information 
@@ -73,7 +77,12 @@ The structure of this document is as followed:
 - Diagram of steps
 - Link to source code 
 
-##
+#### Challenge 
+- Unexpected surprise is some games requireing extra screen for age restricted games 
+- Game pages inconsistent, needing to be handled
+    - Discounts 
+    - Unique drop-down menus (GTA V)
+    - Changed the way identified datafields
 
 
 

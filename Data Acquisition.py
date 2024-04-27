@@ -6,13 +6,15 @@ This Python script is responsible for the acquisition, transformation, and expor
 from bs4 import BeautifulSoup
 import requests
 
-# Web interaction libraries 
+# Web interaction/botting libraries 
 from selenium import webdriver 
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import NoSuchElementException
 
 # General libraries
 import pickle
@@ -23,14 +25,18 @@ import os
 import pandas as pd
 # myDataFrame = pd.DataFrame(columns = ['Rank', 'Game Title', 'Date', 'Avg. Players', 'Peak Players'])
 
+# Global vars
 isCollectingNewData = True
+url_steamChartsBase = 'https://steamcharts.com'
 io_path = f'../Data Analysis- Are F2P Games the Solomn Future/list_of_games_data.pkl'
+list_of_games = []
+list_game_url = []
 
 def main():
 
-    url_steamChartsBase = 'https://steamcharts.com'
-
-    # Scraping or reading in data?
+    '''
+    This function is used to determine if new data is going to be scraped, or loaded from local memory.
+    '''
     determineCollectNewData()
 
     '''
@@ -40,72 +46,30 @@ def main():
 
     This information enables the automated scraping of the required data from this website, in the getGameStats() function.
     '''
-    list_game_url = []
-    getSteamChartsGameList(list_game_url, url_steamChartsBase)
+    getSteamChartsGameList()
         
     '''
     In this function, statistical details for each game are acquired and stored in a Game object.
 
     The end result is a list of Game objects enabling data to be easily added to a dataframe and exported.
     '''
-    list_of_games = []
-    getGameStats(list_game_url, url_steamChartsBase, list_of_games)
+    getGameStats()
 
-    # Reading/writing variables locally
-    list_of_games = handleVariables(list_of_games)
+    '''
+    In this function, a bot is created to interact with Steam's official site to get the current price of the game. 
 
-    # Setup chrome driver
-    service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
-    driver = webdriver.Chrome(service=service)
-    
-    # For each game, get price (game name, price)
-    for game in list_of_games:
-        gameTitle = game.get_name()
+    The bot is designed to handle 'unexpected' pages and varying page layouts.
+    '''
+    getGamePrices()
 
-
-        # Open site 
-        driver.get('https://store.steampowered.com/')
-
-        # Safely confirm presence of textbox
-        WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.ID, 'store_nav_search_term'))
-        )
-
-        # Identify and interact with textbox
-        input_element = driver.find_element(By.ID, 'store_nav_search_term')       
-        input_element.send_keys(gameTitle + Keys.ENTER)
-
-        # Isolate Steam page URL
-        pageHTML = driver.page_source
-        url_index = pageHTML.find('store.steampowered.com/app')
-        messyURL = pageHTML[url_index:url_index + 200]
-        cleanURL  = '/'.join(messyURL.split('/')[:4]) + '/'
-
-
-        # Go to Steam page and get price
-        driver.get(f'https://{cleanURL}')
-        
-        # Handle age verification
-            #todo
-
-        pageHTML = driver.page_source
-        price_index = pageHTML.find('game_purchase_price')
-        messyPrice = pageHTML[price_index:price_index + 200]
-        cleanPrice = messyPrice.split('>')[1].split('<')[0].strip()
-        
-        # Update Price
-        game.set_price('£0' if cleanPrice == 'Free to Play' else cleanPrice)
-
-        # https://store.steampowered.com/app/271590/Grand_Theft_Auto_V/ - Problem game
-
-    isCollectingNewData = True
-    handleVariables(list_of_games)
-    input()
+    # Read/write variables locally
+    handleVariables()
         
         
         
 # My Functions
-def handleVariables(list_of_games):
+def handleVariables():
+    global list_of_games
     if isCollectingNewData:
         with open('list_of_games_data.pkl', 'wb') as f:
             pickle.dump(list_of_games, f)
@@ -113,7 +77,6 @@ def handleVariables(list_of_games):
         with open(io_path, 'rb') as f:
             list_of_games = pickle.load(f)
     
-    return list_of_games
 
 def determineCollectNewData():
     if os.path.exists(io_path):
@@ -129,7 +92,7 @@ def getTableColumns(pageText):
     dirtyHeaders = dirtyTable.find_all('th')
     return dirtyTable, dirtyHeaders
 
-def getSteamChartsGameList(list_game_url, url_steamChartsBase):
+def getSteamChartsGameList():
 
     # Base Case
     if not isCollectingNewData:
@@ -152,7 +115,7 @@ def getSteamChartsGameList(list_game_url, url_steamChartsBase):
             gameTitle = linkTag.text.strip() # Isolate game title
             list_game_url.append((tableRows.index(row),gameTitle, link))
 
-def getGameStats(list_game_url, url_steamChartsBase, list_of_games):
+def getGameStats():
 
     # Base Case
     if not isCollectingNewData:
@@ -181,6 +144,74 @@ def getGameStats(list_game_url, url_steamChartsBase, list_of_games):
 
         # Add Game object to list 
         list_of_games.append(tempGameObject)
+
+def getGamePrices(list_of_games):
+
+    # Base Case
+    if not isCollectingNewData:
+        return 
+
+    # Setup chrome driver
+    service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
+    driver = webdriver.Chrome(service=service)
+    
+    # For each game, get price (game name, price)
+    for game in list_of_games:
+        gameTitle = game.get_name()
+
+        # Open site 
+        driver.get('https://store.steampowered.com/')
+
+        # Safely confirm presence of textbox
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, 'store_nav_search_term'))
+        )
+
+        # Identify and interact with textbox
+        input_element = driver.find_element(By.ID, 'store_nav_search_term')       
+        input_element.send_keys(gameTitle + Keys.ENTER)
+
+        # Isolate Steam page URL
+        pageHTML = driver.page_source
+        url_index = pageHTML.find('store.steampowered.com/app')
+        messyURL = pageHTML[url_index:url_index + 200]
+        cleanURL  = '/'.join(messyURL.split('/')[:4]) + '/'
+
+
+        # Go to Steam page and get price
+        driver.get(f'https://{cleanURL}')
+        
+        # Handle age verification
+        if 'agecheck' in driver.current_url:
+            
+            # Select birth year as 2000
+            dropdown = driver.find_element(By.ID, 'ageYear')
+            select = Select(dropdown)
+            select.select_by_value('2000')
+
+            # Click 'View Page' button
+            button = driver.find_element(By.ID, 'view_product_page_btn')
+            button.click()
+
+            # Wait for page to load
+            time.sleep(2)
+
+        
+        # Identify price
+        pageHTML = driver.page_source
+        
+        cleanPrice = None
+        try:
+            dirtyPrice = driver.find_element(By.CLASS_NAME, 'game_purchase_price')
+            cleanPrice = dirtyPrice.text
+        except NoSuchElementException:
+            dirtyPrice = driver.find_element(By.CLASS_NAME, 'discount_final_price')
+            cleanPrice = dirtyPrice.text
+        
+        # Update Price
+        game.set_price('£0' if cleanPrice == 'Free to Play' or cleanPrice == 'Free' else cleanPrice)
+
+    driver.quit()
 
 # My Classes
 class Game:
