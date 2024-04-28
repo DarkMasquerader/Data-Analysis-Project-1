@@ -2,158 +2,243 @@ Game Title,Price,Single Player,Online PvP,Online Co-Op,In-App Purchases
 Counter-Strike 2,£0,False,True,False,True
 Dota 2,£0,False,True,False,True
 PUBG: BATTLEGROUNDS,£0,False,True,False,False
-Apex Legends,£0,False,True,True,True
-NARAKA: BLADEPOINT,£0,False,True,False,True
-Manor Lords,£7.18,True,False,False,False
-Grand Theft Auto V,£17.68,True,True,True,False
-Stardew Valley,£10.99,True,True,True,False
 Fallout 4,£15.99,True,False,False,False
+Manor Lords,£7.18,True,False,False,False
 HELLDIVERS™ 2,£34.99,False,True,True,True
-Wallpaper Engine,£3.49,False,False,False,False
-7 Days to Die,£33.99,False,True,False,False
-Call of Duty®,£1.99,True,False,True,True
-Tom Clancy's Rainbow Six Siege,,False,False,False,False
-Monster Hunter: World,NULL,True,True,False,False
-War Thunder,£0,True,False,True,True
+Apex Legends,£0,False,True,True,True
+Stardew Valley,£10.99,True,True,True,False
+Call of Duty®,NULL,True,True,True,True
+Grand Theft Auto V,£17.68,True,True,True,False
+Tom Clancy's Rainbow Six Siege,£17.99,True,True,True,True
 Baldur's Gate 3,£49.99,True,False,True,False
-Football Manager 2024,£44.99,True,False,False,False
-Team Fortress 2,£0,False,True,False,True
 Destiny 2,£0,True,False,True,True
-Warframe,£0,True,False,True,True
-Crab Game,£0,False,True,True,False
+War Thunder,,False,False,False,False
 Lost Ark,£0,True,True,True,True
-EA SPORTS FC™ 24,£59.99,True,True,True,True
-Hearts of Iron IV,£41.99,True,False,False,False
-Unturned,,False,False,False,False
-Overwatch® 2,£0,False,True,True,True
-Dead by Daylight,,False,False,False,False
-Palworld,£24.99,True,True,True,False
-RimWorld,£28.49,True,False,False,False
-DayZ,£33.99,False,True,True,False
+Team Fortress 2,£0,False,True,False,True
+Football Manager 2024,£44.99,True,False,False,False
 Fallout 76,£34.99,False,True,True,True
-Red Dead Redemption 2,£59.99,True,False,True,True
-Path of Exile,£0,True,False,True,True
+EA SPORTS FC™ 24,£59.99,True,True,True,True
+Crab Game,£0,False,True,True,False
+DayZ,£33.99,False,True,True,False
+Warframe,£0,True,False,True,True
+7 Days to Die,£33.99,False,True,False,False
+Wallpaper Engine,£3.49,False,False,False,False
+Unturned,£0,True,True,True,True
+Hearts of Iron IV,,False,False,False,False
+RimWorld,,False,False,False,False
+Dead by Daylight,NULL,False,True,True,False
+Valheim,£15.49,True,False,True,False
+Fallout: New Vegas,,False,False,False,False
 Spacewar,£15.49,True,False,False,False
-tModLoader,,False,False,False,False
-Euro Truck Simulator 2,£16.89,True,False,True,False
-Terraria,£8.50,True,False,True,False
-Governor of Poker 3,£0,False,True,False,True
+Euro Truck Simulator 2,£0.84,True,False,True,False
 The Sims™ 4,£0,True,False,False,False
-Cyberpunk 2077,£49.99,True,False,False,False
-Valheim,,False,False,False,False
-PAYDAY 2,,False,False,False,False
-Lethal Company,£8.50,True,False,True,False
-MONSTER HUNTER RISE,,False,False,False,False
-Yu-Gi-Oh!  Master Duel,£0,True,True,False,True
+Governor of Poker 3,,False,False,False,False
+Overwatch® 2,£0,False,True,True,True
+tModLoader,£0,True,False,True,False
+Red Dead Redemption 2,£59.99,True,False,True,True
+Terraria,£8.50,True,False,True,False
 Garry's Mod,£6.99,True,True,True,False
-Squad,£39.99,False,True,False,False
-Left 4 Dead 2,£8.50,True,True,True,False
-VRChat,£0,False,True,True,False
-Granblue Fantasy: Relink,£49.99,True,False,True,False
-Project Zomboid,£16.75,True,True,True,False
-Mount & Blade II: Bannerlord,£42.99,True,False,False,False
-Rotwood,£8.36,True,False,True,False
-Fallout: New Vegas,£8.99,True,False,False,False
-Age of Empires II: Definitive Edition,NULL,True,True,True,False
-Hunt: Showdown,£35.99,False,False,True,True
-Forza Horizon 5,NULL,True,True,True,False
-ARK: Survival Ascended,£37.99,True,False,True,False
-Myth of Empires,,False,False,False,False
-NBA 2K24,£49.99,True,False,True,True
+NARAKA: BLADEPOINT,£0,False,True,False,True
 FINAL FANTASY XIV Online,£9.99,True,True,True,False
-Battlefield™ V,£44.99,True,True,False,False
+Lethal Company,£8.50,True,False,True,False
+Monster Hunter: World,,False,False,False,False
+Total War: WARHAMMER III,£49.99,True,False,True,False
+Project Zomboid,£16.75,True,True,True,False
+Palworld,£24.99,True,True,True,False
+ARK: Survival Ascended,£37.99,True,False,True,False
+VRChat,,False,False,False,False
+Cyberpunk 2077,£49.99,True,False,False,False
 The Elder Scrolls V: Skyrim Special Edition,£34.99,True,False,False,False
-Street Fighter™ 6,,False,False,False,False
-SCUM,£33.49,True,True,True,False
-Black Desert,£8.99,False,True,True,True
-No Rest for the Wicked,£31.49,True,False,False,False
-Slay the Spire,£19.99,True,False,False,False
-Hero's Land,£0,False,False,False,True
-Russian Fishing 4,£0,True,True,False,True
-The Witcher 3: Wild Hunt,£24.99,True,False,False,False
-Sea of Thieves,£17.49,False,True,True,True
-Europa Universalis IV,£34.99,True,False,True,False
-Crosshair X,£5.49,False,False,False,False
-MIR4,£0,False,False,True,True
-Age of Empires IV: Anniversary Edition,£24.00,True,True,True,False
-Persona 5 Royal,£19.99,True,False,False,False
-Summoners War,£0,False,False,False,True
-Sid Meier's Civilization V,£19.99,True,False,False,False
-BeamNG.drive,£19.49,True,False,False,False
-The Elder Scrolls Online,,False,False,False,False
-The Planet Crafter,£19.99,True,False,True,False
-Kingdom Come: Deliverance,,False,False,False,False
+Age of Empires II: Definitive Edition,NULL,True,True,True,False
+PAYDAY 2,£8.50,True,True,True,True
+Squad,£39.99,False,True,False,False
+Hunt: Showdown,£35.99,False,False,True,True
 Geometry Dash,£2.79,True,False,False,False
-Deep Rock Galactic,,False,False,False,False
-Crusader Kings III,£41.99,True,False,False,False
-Balatro,£12.79,True,False,False,False
-Goose Goose Duck,£0,False,True,True,True
-Factorio,NULL,True,False,True,False
-THE FINALS,£0,False,False,True,True
-Sekiro™: Shadows Die Twice,£24.95,True,False,False,False
-OBS Studio,£0,False,False,False,False
-Stellaris,£34.99,True,False,False,False
-Horizon Forbidden West™ Complete Edition,£49.99,True,False,False,False
-Cities: Skylines,£24.99,True,False,False,False
-Football Manager 2023,£6.99,True,False,True,False
-Soundpad,NULL,False,False,False,False
-Phasmophobia,£10.99,True,True,True,False
-Rusty's Retirement,£3.49,True,False,False,False
-Battlefield™ 2042,£49.99,False,True,True,True
-Assetto Corsa,£15.49,True,False,False,False
-Albion Online,£0,False,False,False,True
-Grounded,£4.31,True,True,True,False
+Sea of Thieves,£17.49,False,True,True,True
+Crosshair X,£5.49,False,False,False,False
+BeamNG.drive,£19.49,True,False,False,False
+Black Desert,£8.99,False,True,True,True
+Left 4 Dead 2,£8.50,True,True,True,False
+The Elder Scrolls Online,£15.99,False,False,True,True
+Sid Meier's Civilization V,£19.99,True,False,False,False
+Phasmophobia,,False,False,False,False
+The Planet Crafter,£19.99,True,False,True,False
+Europa Universalis IV,£34.99,True,False,True,False
 Arma 3,£23.99,True,True,True,False
-VPet,£0,True,False,True,False
 Brawlhalla,£0,True,True,True,False
-VTube Studio,£0,True,False,False,False
-World of Tanks Blitz,£0,False,True,True,True
-Remnant II,£50.49,True,False,True,False
-Satisfactory,£27.99,True,False,True,False
-Bloons TD 6,£11.79,True,True,True,True
-TEKKEN 8,£84.99,True,True,False,False
-Last Epoch,£29.50,True,False,True,True
-Enshrouded,£24.99,True,True,True,False
-Bellwright,,False,False,False,False
-World of Warships,£0,False,False,True,True
-Dead Island 2,NULL,True,False,True,False
-Forza Horizon 4,NULL,True,True,True,False
-Cookie Clicker,£4.29,True,False,False,False
-Counter-Strike,,False,False,False,False
-Sons Of The Forest,£24.99,True,True,True,False
-Hogwarts Legacy,£49.99,True,False,False,True
-Oxygen Not Included,£18.99,True,False,False,False
-eFootball™ 2024,£0,True,True,True,True
-Back 4 Blood,£49.99,True,True,True,False
-Raft,£14.99,True,True,True,False
-Counter-Strike: Source,£8.50,False,True,False,False
-Content Warning,£6.69,False,True,True,False
-NBA 2K23,£49.99,True,False,True,True
-Palia,£0,True,False,True,True
-Microsoft Flight Simulator,£35.99,True,False,False,True
-Blender,£0,False,False,False,False
-Death Must Die,£5.89,True,False,False,False
-Legends of Idleon MMO,£0,False,True,False,False
-Diablo® IV,£128.95,True,False,True,True
-Backpack Battles,,False,False,False,False
+Mount & Blade II: Bannerlord,£42.99,True,False,False,False
+Balatro,£12.79,True,False,False,False
+Myth of Empires,,False,False,False,False
+Don't Starve Together,£10.99,True,True,True,True
+Yu-Gi-Oh!  Master Duel,£0,True,True,False,True
+MIR4,£0,False,False,True,True
+Summoners War,£0,False,False,False,True
+THE FINALS,£0,False,False,True,True
+Kingdom Come: Deliverance,£0,True,False,False,False
+Forza Horizon 5,NULL,True,True,True,False
+Crusader Kings III,£41.99,True,False,False,False
+Factorio,NULL,True,False,True,False
+Soundpad,NULL,False,False,False,False
+Assetto Corsa,£15.49,True,False,False,False
 SMITE,£24.99,False,False,True,False
-Aimlabs,£0,True,False,False,False
-New World,£32.99,False,True,True,True
+Horizon Forbidden West™ Complete Edition,,False,False,False,False
+The Witcher 3: Wild Hunt,£24.99,True,False,False,False
+Stellaris,£34.99,True,False,False,False
+Bloons TD 6,£11.79,True,True,True,True
+Satisfactory,£27.99,True,False,True,False
+Counter-Strike,£7.19,False,True,False,False
+SCUM,£33.49,True,True,True,False
+Content Warning,,False,False,False,False
+Bellwright,£22.49,True,False,True,False
+Age of Empires IV: Anniversary Edition,£24.00,True,True,True,False
+Enshrouded,£24.99,True,True,True,False
+Football Manager 2023,£6.99,True,False,True,False
+Grounded,£4.31,True,True,True,False
+World of Tanks Blitz,£0,False,True,True,True
+Rusty's Retirement,£3.49,True,False,False,False
+Sons Of The Forest,£24.99,True,True,True,False
+Albion Online,£0,False,False,False,True
+No Rest for the Wicked,£31.49,True,False,False,False
+Granblue Fantasy: Relink,£49.99,True,False,True,False
+Hogwarts Legacy,£49.99,True,False,False,True
+Cookie Clicker,£4.29,True,False,False,False
+Remnant II,£50.49,True,False,True,False
+eFootball™ 2024,£0,True,True,True,True
+NBA 2K24,£49.99,True,False,True,True
+Slay the Spire,£19.99,True,False,False,False
+Call of Duty: Black Ops III,£11.59,True,True,False,False
+Dead Island 2,,False,False,False,False
+OBS Studio,£0,False,False,False,False
+Counter-Strike: Source,£8.50,False,True,False,False
+TEKKEN 8,£84.99,True,True,False,False
+MONSTER HUNTER RISE,£8.24,True,False,True,False
+Last Epoch,£29.50,True,False,True,True
+Hell Let Loose,£49.99,False,False,False,False
+New World,,False,False,False,False
+Microsoft Flight Simulator,£35.99,True,False,False,True
+Risk of Rain 2,,False,False,False,False
+Battlefield™ 2042,£49.99,False,True,True,True
+Palia,£0,True,False,True,True
+Legends of Idleon MMO,£0,False,True,False,False
+American Truck Simulator,£16.89,True,False,True,False
+Raft,,False,False,False,False
+Street Fighter™ 6,£134.95,True,False,False,True
+Russian Fishing 4,,False,False,False,False
+Blender,£0,False,False,False,False
+Tabletop Simulator,£14.99,True,True,True,False
 No Man's Sky,£49.99,True,False,True,False
-Green Hell,£19.49,True,True,True,False
-Hollow Knight,£12.79,True,False,False,False
+Sekiro™: Shadows Die Twice,£24.95,True,False,False,False
 STALCRAFT,£0,False,True,True,True
-Limbus Company,£0,True,False,False,True
-Party Animals,£15.49,True,True,True,True
-Eiyuden Chronicle: Hundred Heroes,£44.99,True,False,False,False
-Dying Light 2: Reloaded Edition,NULL,True,False,True,False
-Total War: THREE KINGDOMS,£0,True,False,False,True
-Resident Evil 4,NULL,True,False,False,False
-Risk of Rain 2,£19.99,True,True,True,False
+DSX,£6.69,True,False,False,False
+Oxygen Not Included,£18.99,True,False,False,False
+Fallout Shelter,,False,False,False,False
+Hollow Knight,£12.79,True,False,False,False
+Halo: The Master Chief Collection,NULL,True,True,True,False
+Persona 5 Royal,£19.99,True,False,False,False
+Starfield,£59.99,True,False,False,False
+Among Us,,False,False,False,False
+Hades,£20.99,True,False,False,False
+Goose Goose Duck,£0,False,True,True,True
+"Warhammer 40,000: Darktide",£32.99,False,False,True,True
+Ready or Not,£44.99,True,True,True,False
+Hero's Land,£0,False,False,False,True
+Space Engineers,£15.49,True,True,False,False
+Assetto Corsa Competizione,,False,False,False,False
+Paladins,£0,False,True,False,True
 Victoria 3,£41.99,True,False,False,False
-Pixel Gun 3D: PC Edition,,False,False,False,False
-DARK SOULS™ III,£39.99,True,False,False,False
-Gunfire Reborn,£15.49,True,False,True,False
+Stumble Guys,£0,False,True,False,True
+Subnautica,£24.99,True,False,False,False
 SCP: Secret Laboratory,£0,False,True,False,False
-It Takes Two,NULL,False,True,True,False
-Torchlight: Infinite,,False,False,False,False
+DARK SOULS™ III,,False,False,False,False
+Diablo® IV,£128.95,True,False,True,True
+STAR WARS™: The Old Republic™,£0,False,True,False,True
+Planet Zoo,£34.99,True,False,False,False
+Total War: ROME II - Emperor Edition,£29.99,True,False,True,False
+Age of Empires III: Definitive Edition,£0,True,False,False,False
+World of Warships,£0,False,False,True,True
+Dying Light 2: Reloaded Edition,NULL,True,False,True,False
+Rotwood,£8.36,True,False,True,False
+Forza Horizon 4,NULL,True,True,True,False
+VTube Studio,£0,True,False,False,False
+The Isle,£14.99,False,True,False,False
+ULTRAKILL,£20.99,True,False,False,False
+F1® 23,£59.99,True,False,True,False
+Eiyuden Chronicle: Hundred Heroes,£44.99,True,False,False,False
+SnowRunner,£24.99,True,False,True,False
+Sky: Children of the Light,,False,False,False,False
+YoloMouse,£3.55,False,False,False,False
+Borderlands 3,£49.99,True,True,True,False
+Divinity: Original Sin 2,£29.99,True,False,True,False
+The Forest,£15.49,True,False,True,False
+Aimlabs,£0,True,False,False,False
+Anno 1800,NULL,True,False,True,False
+Torchlight: Infinite,£0,True,False,False,True
+Resident Evil 4,NULL,True,False,False,False
+Kenshi,£22.99,True,False,False,False
+V Rising,£29.50,True,False,True,False
+Noita,£15.49,True,False,False,False
+Crossout,£0,False,False,True,True
+Guild Wars 2,£0,False,False,True,True
+Predecessor,£0,True,False,True,True
+World of Tanks,£0,False,False,False,True
+Horizon Zero Dawn™ Complete Edition,£39.99,True,False,False,False
+MARVEL SNAP,£0,False,False,False,True
+Melvor Idle,,False,False,False,False
+XCOM 2,£34.99,True,False,False,False
+Backpack Battles,£9.89,False,False,False,False
+Shop Titans,,False,False,False,False
+Football Manager 2022,£5.99,True,False,True,False
+BattleBit Remastered,,False,False,False,False
+Green Hell,£19.49,True,True,True,False
+Battlefield™ V,£44.99,True,True,False,False
+Medieval Dynasty,£26.99,True,True,True,False
+FIFA 22,£59.99,True,True,True,True
+Another Crab's Treasure,£6.02,True,False,False,False
+"Warhammer 40,000: Rogue Trader",£42.99,True,False,True,False
+Aseprite,£15.49,False,False,False,False
+Ravenswatch,£11.72,True,False,True,False
+Persona 3 Reload,NULL,True,False,False,False
+Barotrauma,£4.49,True,True,True,False
+Age of Empires II (2013),£6.99,True,True,False,False
+Elite Dangerous,,False,False,False,False
+Mount & Blade: Warband,£16.99,True,False,False,False
+Party Animals,£15.49,True,True,True,True
+Arma Reforger,£24.99,True,False,True,False
+Total War: SHOGUN 2,,False,False,False,False
+Halo Infinite,£0,False,True,False,True
+Frostpunk,NULL,True,False,False,False
+Idle Champions of the Forgotten Realms,£0,True,False,False,True
+Unnamed Space Idle,£0,True,False,False,True
+Killing Floor 2,£19.99,True,False,True,True
+EVE Online,£0,False,False,True,False
+Wartales,£29.99,True,False,True,False
+Assassin's Creed Odyssey,£49.99,True,False,False,True
+VPet,£0,True,False,True,False
+Borderlands 2,,False,False,False,False
+Gunfire Reborn,£15.49,True,False,True,False
+Sker Ritual,£19.99,True,False,True,False
+Dying Light,£20.99,True,False,True,False
+NGU IDLE,£0,True,False,False,True
+Limbus Company,£0,True,False,False,True
+Farming Simulator 19,,False,False,False,False
+NBA 2K23,£49.99,True,False,True,True
+Darkest Dungeon®,£20.99,True,False,False,False
+Captain of Industry,,False,False,False,False
+Mass Effect™ Legendary Edition,£49.99,True,False,False,False
+Warhammer: Vermintide 2,£23.79,True,False,True,False
+Dyson Sphere Program,£15.49,True,False,False,False
+CarX Drift Racing Online,,False,False,False,False
+Lust Goddess,,False,False,False,False
+Total War: WARHAMMER II,£39.99,True,False,True,False
+Crosshair V2,£0,False,False,False,False
+Transport Fever 2,£33.50,True,False,False,False
+Brotato,£3.99,True,False,False,False
+Battlefield 1 ™,£34.99,True,True,False,False
+Against the Storm,£24.99,True,False,False,False
+Escape the Backrooms,£7.19,True,True,True,False
+RISK: Global Domination,£0,True,True,True,True
+Northgard,,False,False,False,False
+Icarus,£29.50,True,True,True,False
+Madden NFL 24,£59.99,True,False,False,True
+Teardown,£23.52,True,False,False,False
+Fallout: New Vegas PCR,,False,False,False,False

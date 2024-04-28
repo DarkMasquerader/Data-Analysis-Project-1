@@ -26,12 +26,12 @@ import pandas as pd
 
 # Threading libraries
 from threading import Thread, Lock
-threadLimit = 7
+threadLimit = 10
 mutex = Lock()
 
 # Global vars
-no_games = 200
-no_pages =  (no_games // 25) + 1
+no_games = 250
+no_pages =  (no_games // 25) + 2
 max_games = 25 * (no_pages-1)
 
 isCollectingNewData = None
@@ -70,8 +70,11 @@ def main():
 
     The bot is designed to handle 'unexpected' and inconsistent page layouts.
     '''
+    start_time = time.time()
     # getGameInfoFromSteam() 
     getGameInfoFromSteamThreaded() 
+    end_time = time.time()
+    print(f'Steam Runtime: {end_time-start_time}')
 
     # Read/write variables locally
     handleVariables()
@@ -124,6 +127,7 @@ def getSteamChartsGameList():
     if not isCollectingNewData:
         return 
 
+    rankCounter = 1
     for pageCounter in range(1, no_pages):
 
         # Acquire HTML
@@ -139,7 +143,8 @@ def getSteamChartsGameList():
             linkTag = row.find('a')
             link = linkTag.get('href') # Isolate URL component for next for loop
             gameTitle = linkTag.text.strip() # Isolate game title
-            list_game_url.append((tableRows.index(row),gameTitle, link))
+            list_game_url.append((rankCounter,gameTitle, link))
+            rankCounter += 1
 
 def getGameStats():
 
@@ -259,6 +264,9 @@ def threadCallee(num):
         except ValueError as e:
             print(f'Exception Occurred: {e}')
             continue
+        except NoSuchElementException as e:
+            print(f'Exception Occurred: {e}')
+            continue
         except StopIteration:
             print('End of list')
             driver.quit()
@@ -332,13 +340,13 @@ def getGameInfoFromSteam():
 def isolateGamePrice(game, driver):
         try:
             dirtyPrice = driver.find_element(By.CLASS_NAME, 'game_purchase_price')
-            cleanPrice = dirtyPrice.text
+            cleanPrice = dirtyPrice.text.lower().strip()
         except NoSuchElementException:
             dirtyPrice = driver.find_element(By.CLASS_NAME, 'discount_final_price')
-            cleanPrice = dirtyPrice.text
+            cleanPrice = dirtyPrice.text.lower().strip()
         
         # Update Price
-        game.set_price('£0' if cleanPrice.lower().strip() == 'free to play' or cleanPrice.lower().strip() == 'free' else cleanPrice)
+        game.set_price('£0' if 'free' in cleanPrice else cleanPrice)
 
 def isolateGameFeatures(game, driver):
     list_of_features = ('In-App Purchases', 'Online PvP', 'Online Co-op', 'Single-player', 'Cross-Platform Multiplayer')
