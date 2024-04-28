@@ -23,13 +23,22 @@ import os
 
 # Dataframe library
 import pandas as pd
-# myDataFrame = pd.DataFrame(columns = ['Rank', 'Game Title', 'Date', 'Avg. Players', 'Peak Players'])
+
+# Threading libraries
+from threading import Thread, Lock
+threadLimit = 7
+mutex = Lock()
 
 # Global vars
-no_pages = 8 # No games = no_pages * 25
+no_games = 200
+no_pages =  (no_games // 25) + 1
+max_games = 25 * (no_pages-1)
+
 isCollectingNewData = None
+
 url_steamChartsBase = 'https://steamcharts.com'
 io_path = f'../Data Analysis- Are F2P Games the Solomn Future/list_of_games_data.pkl'
+
 list_of_games = []
 list_game_url = []
 
@@ -45,28 +54,43 @@ def main():
     
     The URL is acquired due to a game URL being determined by an unpredictable, randomly assigned number.
 
-    This information enables the automated scraping of the required data from this website, in the getGameStats() function.
+    This information enables the automated scraping of the required data from SteamCharts, in the getGameStats() function.
     '''
     getSteamChartsGameList()
         
     '''
-    In this function, statistical details for each game are acquired and stored in a Game object.
+    In this function, statistical details for each game are acquired from SteamCharts and stored in a Game object.
 
     The end result is a list of Game objects enabling data to be easily added to a dataframe and exported.
     '''
     getGameStats()
 
     '''
-    In this function, a bot is created to interact with Steam's official site to get the current price of the game. 
+    In this function, a bot is created to interact with Steam's official site to get the current price of the game, alongside other miscellaneous information. 
 
-    The bot is designed to handle 'unexpected' pages and varying page layouts.
+    The bot is designed to handle 'unexpected' and inconsistent page layouts.
     '''
-    getGamePrices() #InvalidArgumentException & Output current game
+    # getGameInfoFromSteam() 
+    getGameInfoFromSteamThreaded() 
 
     # Read/write variables locally
     handleVariables()
+    
+    # Create dataframes
+    statsDataFrame = pd.DataFrame(columns = ['Game Title', 'Rank', 'Date', 'Avg. Players', 'Peak Players'])
+    detailsDataFrame = pd.DataFrame(columns= ['Game Title', 'Price', 'Single Player', 'Online PvP', 'Online Co-Op', 'In-App Purchases'])
         
+    # Fill dataframes
+    for game in list_of_games:
+
+        for row in game.to_stats_list():
+            statsDataFrame.loc[len(statsDataFrame)] = row
         
+        detailsDataFrame.loc[len(detailsDataFrame)] = game.to_details()
+
+    statsDataFrame.to_csv('Stats.csv', index = False)
+    detailsDataFrame.to_csv('Details.csv', index = False)
+
         
 # My Functions
 def handleVariables():
@@ -147,70 +171,165 @@ def getGameStats():
         # Add Game object to list 
         list_of_games.append(tempGameObject)
 
-def getGamePrices():
+def getGameInfoFromSteamThreaded():
+    
+    # Base Case - Are reading in or collecting new data?
+    if not isCollectingNewData:
+        return 
 
-    # Base Case
+    global threadGameList
+    threadGameList = iter(list_of_games)
+
+    _list = []
+    for temp in range(0,threadLimit):
+        _ = Thread(target = threadCallee, args = [temp,] )
+        _.start()
+        _list.append(_)
+
+    for _ in _list:
+        _.join()
+
+threadGameCounter = 0
+def getNextGame():
+    with mutex:
+        global threadGameCounter
+        threadGameCounter += 1
+        return next(threadGameList), threadGameCounter, 
+
+def threadCallee(num):
+
+    print(f'Thread #{num} started')
+    
+    # Setup chrome driver
+    service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
+
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_argument(f'--user-data-dir=ChromeProfile/Profile{num}')
+    driver = webdriver.Chrome(service=service)
+
+    # For each game, get price (game name, price)
+        
+    while True:
+        try:
+            game, gameNumber = getNextGame()
+            # Get game title
+            gameTitle = game.get_name()
+            
+            # Debug print
+            print(f"({gameNumber}/{max_games}) Current Game: {gameTitle} <Thread #{num}>")
+
+            # Open homepage 
+            driver.get('https://store.steampowered.com/')
+
+            # Safely confirm presence of textbox before attempting interaction
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.ID, 'store_nav_search_term'))
+            )
+
+            # Identify and interact with textbox (searching for steam game)
+            input_element = driver.find_element(By.ID, 'store_nav_search_term')       
+            input_element.send_keys(gameTitle + Keys.ENTER)
+
+            # Isolate Steam search page URL
+            pageHTML = driver.page_source
+            
+            # Base Case - Game not found
+            if '0 results match your search.' in pageHTML:
+                list_of_games.remove(game) # Remove game
+                continue # Go to next game in list
+            else:
+                url_index = pageHTML.find('store.steampowered.com/app')
+                messyURL = pageHTML[url_index:url_index + 200]
+                cleanURL  = '/'.join(messyURL.split('/')[:4]) + '/'
+
+            # Go to Steam page and get price
+            driver.get(f'https://{cleanURL}')
+            
+            # Base Case - Age verification page
+            handleAgeVerificationPage(driver)
+
+            # Identify price
+            isolateGamePrice(game, driver)
+
+            # Identify features
+            isolateGameFeatures(game, driver)
+
+            time.sleep(4)
+
+        except ValueError as e:
+            print(f'Exception Occurred: {e}')
+            continue
+        except StopIteration:
+            print('End of list')
+            driver.quit()
+            break
+
+def getGameInfoFromSteam():
+
+    # Base Case - Are reading in or collecting new data?
     if not isCollectingNewData:
         return 
 
     # Setup chrome driver
     service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
+    # global driver
     driver = webdriver.Chrome(service=service)
     
     # For each game, get price (game name, price)
+    _counter = 0
     for game in list_of_games:
-        gameTitle = game.get_name()
-        print(f"Current Game: {gameTitle}")
-
-        # Open site 
-        driver.get('https://store.steampowered.com/')
-
-        # Safely confirm presence of textbox
-        WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.ID, 'store_nav_search_term'))
-        )
-
-        # Identify and interact with textbox
-        input_element = driver.find_element(By.ID, 'store_nav_search_term')       
-        input_element.send_keys(gameTitle + Keys.ENTER)
-
-
-        # Isolate Steam page URL
-        pageHTML = driver.page_source
         
-        # Base Case - Game doesn't exist
-        if '0 results match your search.' in pageHTML:
-            list_of_games.remove(game) #Remove game
-            continue
-        else:
-            url_index = pageHTML.find('store.steampowered.com/app')
-            messyURL = pageHTML[url_index:url_index + 200]
-            cleanURL  = '/'.join(messyURL.split('/')[:4]) + '/'
-
-
-        # Go to Steam page and get price
-        driver.get(f'https://{cleanURL}')
-        
-        # Handle age verification
-        if 'agecheck' in driver.current_url:
+        try:
+            # Get game title
+            gameTitle = game.get_name()
             
-            # Select birth year as 2000
-            dropdown = driver.find_element(By.ID, 'ageYear')
-            select = Select(dropdown)
-            select.select_by_value('2000')
+            # Debug print
+            _counter += 1
+            print(f"({_counter}/{max_games}) Current Game: {gameTitle}")
 
-            # Click 'View Page' button
-            button = driver.find_element(By.ID, 'view_product_page_btn')
-            button.click()
+            # Open homepage 
+            driver.get('https://store.steampowered.com/')
 
-            # Wait for page to load
-            time.sleep(2)
+            # Safely confirm presence of textbox before attempting interaction
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.ID, 'store_nav_search_term'))
+            )
 
-        
-        # Identify price
-        pageHTML = driver.page_source
-        
-        cleanPrice = None
+            # Identify and interact with textbox (searching for steam game)
+            input_element = driver.find_element(By.ID, 'store_nav_search_term')       
+            input_element.send_keys(gameTitle + Keys.ENTER)
+
+            # Isolate Steam search page URL
+            pageHTML = driver.page_source
+            
+            # Base Case - Game not found
+            if '0 results match your search.' in pageHTML:
+                list_of_games.remove(game) # Remove game
+                continue # Go to next game in list
+            else:
+                url_index = pageHTML.find('store.steampowered.com/app')
+                messyURL = pageHTML[url_index:url_index + 200]
+                cleanURL  = '/'.join(messyURL.split('/')[:4]) + '/'
+
+            # Go to Steam page and get price
+            driver.get(f'https://{cleanURL}')
+            
+            # Base Case - Age verification page
+            handleAgeVerificationPage(driver)
+
+            # Identify price
+            isolateGamePrice(game, driver)
+
+            # Identify features
+            isolateGameFeatures(game, driver)
+
+        except ValueError as e:
+            print(f'Exception Occurred: {e}')
+            continue
+
+    driver.quit()
+
+def isolateGamePrice(game, driver):
         try:
             dirtyPrice = driver.find_element(By.CLASS_NAME, 'game_purchase_price')
             cleanPrice = dirtyPrice.text
@@ -219,9 +338,49 @@ def getGamePrices():
             cleanPrice = dirtyPrice.text
         
         # Update Price
-        game.set_price('£0' if cleanPrice.lower() == 'free to play' or cleanPrice.lower() == 'free' else cleanPrice)
+        game.set_price('£0' if cleanPrice.lower().strip() == 'free to play' or cleanPrice.lower().strip() == 'free' else cleanPrice)
 
-    driver.quit()
+def isolateGameFeatures(game, driver):
+    list_of_features = ('In-App Purchases', 'Online PvP', 'Online Co-op', 'Single-player', 'Cross-Platform Multiplayer')
+
+    # Get page HTML
+    pageHTML = driver.page_source
+
+    # Set tag field in class object for each tag found
+    for feature in list_of_features:
+        if f'<div class="label">{feature}</div>' in pageHTML:
+            match feature:
+                case 'In-App Purchases':
+                    game.set_in_app_purchase()
+                case 'Online PvP', 'Cross-Platform Multiplayer':
+                    game.set_pvp()
+                case 'Online Co-op':
+                    game.set_coop()
+                case 'Single-player':
+                    game.set_1p()
+
+    # Awkward cases
+    elements = driver.find_elements(By.CLASS_NAME, 'app_tag')
+    for e in elements:
+        if 'Multiplayer' in e.text:
+            game.set_pvp()
+
+    return
+        
+def handleAgeVerificationPage(driver):
+    if 'agecheck' in driver.current_url:
+        
+        # Select birth year as 2000
+        dropdown = driver.find_element(By.ID, 'ageYear')
+        select = Select(dropdown)
+        select.select_by_value('2000')
+
+        # Click 'View Page' button
+        button = driver.find_element(By.ID, 'view_product_page_btn')
+        button.click()
+
+        # Wait for page to load
+        time.sleep(2)
 
 # My Classes
 class Game:
@@ -233,6 +392,10 @@ class Game:
         self.list_avg = []
         self.list_peak = []
         self.price = None
+        self.has_in_app_purchase = False
+        self.has_online_pvp = False
+        self.has_online_co_op = False
+        self.has_single_player = False
 
     def add_entry(self, month, avg, peak):
         self.list_month.append(month)
@@ -243,18 +406,38 @@ class Game:
         return self.title
 
     def set_price(self, price):
-        self.price = price
+        # self.price = price
+        self.price = 'NULL' if "£" not in price else price
+
+    def set_in_app_purchase(self):
+        self.has_in_app_purchase = True
+
+    def set_pvp(self):
+        self.has_online_pvp = True
+    
+    def set_coop(self):
+        self.has_online_co_op = True
+    
+    def set_1p(self):
+        self.has_single_player = True
 
     '''
-    Returns a list with each row containing the x-th value from each of the lists.
+    Returns a nested list with each row containing the x-th value from each of the lists.
+    Structure: Title, Rank, Month, Average Peak
     NOTE: The return value needs to be iterated by row to be passed into the dataframe
     '''
-    def to_list(self):
+    def to_stats_list(self):
         self.return_list = []
         for pos in range(len(self.list_month)):
-            self.return_list.append([self.list_month[pos], self.list_avg[pos], self.list_peak[pos]])
+            self.return_list.append([self.title, self.rank, self.list_month[pos], self.list_avg[pos], self.list_peak[pos]])
         
         return self.return_list
+
+    '''
+    Returns a list of details for the dataframe showing the information of the game stored on Steam's website
+    '''
+    def to_details(self):
+        return [self.title, self.price, self.has_single_player, self.has_online_pvp, self.has_online_co_op, self.has_in_app_purchase]
 
 # Main Loop
 if __name__ == '__main__':

@@ -107,6 +107,12 @@ The structure of this document is as followed:
     - Unique drop-down menus (GTA V)
     - Changed the way identified datafields
 
+## Data Cleaning 
+- Months to SQL format, orderable (March 2024 -> 2024-03) and (Last 30 Days -> Current month year)
+- Missing prices
+- Random games having random tabs in html
+- Not having appropriate singe-player tags in 'correct' place 
+- Some games will be incorrect with outliers such as Wallpaper Engine
 
 
 
@@ -115,6 +121,8 @@ The structure of this document is as followed:
 
 
 ========
+
+
 
 
 ## Visualisations 
