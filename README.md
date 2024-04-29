@@ -1,51 +1,41 @@
 # Is the Loot-Box Business Model the Solemn Future of the Gaming Industry?
+This exploration contributes to the generation of a large and easily parse-able dataset comprising <> games with a generation time of <> hours.
 
-- This exploration into this question 
-- Comprised/significant contribution is the generation of a large dataset, easily parsable (during data preparation phase):
-    - x games 
-    - generation time of x hours 
-- Information about:
-    - Price
-    - Historical player count 
-    - Features (1p, 2p, ingame purchases etc.)
-- Data acquired through 
-    - Web scraping 
-    - Botting (automated website interaction)
-- Data accessed through 
-    - .pkl - List of 'Game' objects with functions to export to dataframe
-    - .sql - Such data easily uploaded to databse in 2 tables 
+Data acquired for this project is acquired first-party, primarily through techniques such as *automated web scraping* and *automated website interaction* using advanced programming techniques such as multi-threading and mutexes.
 
-- Remainder of this research consists of usual data analysis steps:
-    - Data processing 
-    - Data analysis
-    - Data sharing
+<!-- I have made this data available in the files <> and <>.
+
+This project comprises the usual data analysis steps of data preparation (acquisition), data processing (cleaning), data analysis, and lastly, data sharing.
+These steps are used to guide the structure of the presentation of my findings. -->
 
 
+## A Brief Introduction 
+Since the early 2010's, and likely due to the invention of the iPod and the advancement of smartphones and the internet, there has been a consistent and significant increase in the number of 'free-to-play' games which generate revenue through advertisements and/or in-game purchases.
+Some high-profile examples of these games are Candy Crush and Clash of Clans.
 
-## Introduction 
-- Since early 10's, likely due to iPod and advancement of smart phones, seen an increasing number of f2p games with in-game purchases
-- High Profile examples 
-    - Candy Crush 
-    - Clash of Clans
-- Despise apparent negative public sentiment of such models
-    - Predatory behaviour
-    - Seen as 'cash grabs'
-- They are still present and seeming to be more widely adopted
-- These two statement appear to be in direct contrast, but what is the truth?
-- Are games built on the F2P model more successful than those built on the traditional paid model?
+This then-new model of gaming (or service, as this model goes beyond the realm of games) is very different from what was the standard where games purchased on consoles on pc games were 'complete'; users got the full experience of the game with their initial purchase.
+(Though, I do believe that if the internet were sufficiently advanced back then, such a business model would have been present then, too!)
 
-### Defining `successful'
-- Ofc, need to define `success`
-    - Naturally, subjective nature, many definitions 
-- Explore as many possible definitions as datasets allow, examples including:
-    - Total sales 
-    - Average player count
-    - Survive 5 years with more than x initial playerbase
-        - 1/2
-        - 3/4
+### My Motivation
+The motivation for this project is that despite the apparent mainstream negative public sentiment towards such business model for their predatory behaviour (and often being referred to as `cash grabs'), they are still present and appear to be flourishing.
 
-### Challenges 
-The main challenges encountered throughout this project's lifetime are:
+These two statements are in direct contrast to one another, but what is the truth? Are games that use this free-to-play model (more commonly known as F2P) more successful than those built on the paid model? 
+
+Let's find out!
+
+[!NOTE]
+I will also be including some technical information in this post, but feel free to skip over it you're not interested!
+
+### How *do* we define `successful'?
+So, when looking into which gaming model is more successful, we need some criteria for `success'. 
+Naturally, with the subjective nature of this word, there are many definitions.
+In this project, I explore as many possible definitions as the datasets will allow.
+Some example definitions are: total sales, average number of players, and lasting x years with more than x% of the initial playerbase.
+
+More on this later on!
+
+## Project Challenges  
+During my time on this project, I encountered a number of challenges, primarily in the data acquisition phase.
 - Data acquisition
     - Information of sales, popularity desireable for this research 
     - Info that companies keep secret from competitors and future clients to give them the edge
@@ -53,14 +43,8 @@ The main challenges encountered throughout this project's lifetime are:
 - x
 - x
 
-### Tools Used 
-- Python (Data Acquisition and Cleaning)
-- SQL 
-- 
-
-### Document Structure 
-The structure of this document is as followed:
-- <title>:<summary>
+## Tools Used 
+My weapons of choice for this project are Python (data acquisition and cleaning), SQL, and R.
 
 ## Data Acquisition 
 
@@ -71,16 +55,12 @@ The structure of this document is as followed:
     - Console (Sony, Nintendo, Xbox)
     - Mobile (Android, iOS)
 
+- Unfortunately, modbile and console privates are very conservative with informtion they make available, includitng historical 
+    - Unfortunate as i believe mobile is ideal platofrm for this research
+
 - Primary focus is Steam, due to the level of granularity and historical data available from steamcharts, a user-managed site, providing data such as ... over a long duration
 
-- Sony considered
-    - Ability to sort by downloads and current popularity 
-    - Less granular details 
-    - Inclusion depend on findings from primary dataset
-
-- Remaining platforms do not provide a means of obtaining the data needed, as they are likely kept as 'business secrets'
-
-- Working with very limited, and biased dataset, as different platforms are known to have differnt habbits and cultures
+- Working with a limited, and biased dataset, as different platforms are known to have differnt habbits and cultures
     - Successful game genres 
     - Likelihood to pay for game or pay full price for games
 
