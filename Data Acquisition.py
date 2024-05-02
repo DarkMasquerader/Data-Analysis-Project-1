@@ -28,6 +28,7 @@ import pandas as pd
 from threading import Thread, Lock
 threadLimit = 10
 mutex = Lock()
+isThreading = True
 
 # Global vars
 no_games = 250
@@ -51,48 +52,30 @@ def main():
 
     '''
     In this function, the basic details of each game are acquired: popularity ranking, game title, and game Steam Charts URL.
-    
     The URL is acquired due to a game URL being determined by an unpredictable, randomly assigned number.
-
     This information enables the automated scraping of the required data from SteamCharts, in the getGameStats() function.
     '''
     getSteamChartsGameList()
         
     '''
     In this function, statistical details for each game are acquired from SteamCharts and stored in a Game object.
-
     The end result is a list of Game objects enabling data to be easily added to a dataframe and exported.
     '''
     getGameStats()
 
     '''
     In this function, a bot is created to interact with Steam's official site to get the current price of the game, alongside other miscellaneous information. 
-
     The bot is designed to handle 'unexpected' and inconsistent page layouts.
     '''
-    start_time = time.time()
-    # getGameInfoFromSteam() 
-    getGameInfoFromSteamThreaded() 
-    end_time = time.time()
-    print(f'Steam Runtime: {end_time-start_time}')
+    getGameInfoFromSteamThreaded() if isThreading else getGameInfoFromSteam()
 
     # Read/write variables locally
     handleVariables()
+
+    # Export to .csv
+    handleExport()
     
-    # Create dataframes
-    statsDataFrame = pd.DataFrame(columns = ['Game Title', 'Rank', 'Date', 'Avg. Players', 'Peak Players'])
-    detailsDataFrame = pd.DataFrame(columns= ['Game Title', 'Price', 'Single Player', 'Online PvP', 'Online Co-Op', 'In-App Purchases'])
-        
-    # Fill dataframes
-    for game in list_of_games:
-
-        for row in game.to_stats_list():
-            statsDataFrame.loc[len(statsDataFrame)] = row
-        
-        detailsDataFrame.loc[len(detailsDataFrame)] = game.to_details()
-
-    statsDataFrame.to_csv('Stats.csv', index = False)
-    detailsDataFrame.to_csv('Details.csv', index = False)
+    
 
         
 # My Functions
@@ -182,6 +165,9 @@ def getGameInfoFromSteamThreaded():
     if not isCollectingNewData:
         return 
 
+    # Recording running time
+    start_time = time.time()
+
     global threadGameList
     threadGameList = iter(list_of_games)
 
@@ -193,6 +179,10 @@ def getGameInfoFromSteamThreaded():
 
     for _ in _list:
         _.join()
+
+    # Display running time
+    end_time = time.time()
+    print(f'Steam Runtime: {end_time-start_time}')
 
 threadGameCounter = 0
 def getNextGame():
@@ -278,6 +268,9 @@ def getGameInfoFromSteam():
     if not isCollectingNewData:
         return 
 
+    # Recording running time
+    start_time = time.time()
+
     # Setup chrome driver
     service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
     # global driver
@@ -337,6 +330,10 @@ def getGameInfoFromSteam():
 
     driver.quit()
 
+    # Display running time
+    end_time = time.time()
+    print(f'Steam Runtime: {end_time-start_time}')
+
 def isolateGamePrice(game, driver):
         try:
             dirtyPrice = driver.find_element(By.CLASS_NAME, 'game_purchase_price')
@@ -389,6 +386,22 @@ def handleAgeVerificationPage(driver):
 
         # Wait for page to load
         time.sleep(2)
+
+def handleExport():
+    # Create dataframes
+    statsDataFrame = pd.DataFrame(columns = ['Game Title', 'Rank', 'Date', 'Avg. Players', 'Peak Players'])
+    detailsDataFrame = pd.DataFrame(columns= ['Game Title', 'Price', 'Single Player', 'Online PvP', 'Online Co-Op', 'In-App Purchases'])
+        
+    # Fill dataframes
+    for game in list_of_games:
+
+        for row in game.to_stats_list():
+            statsDataFrame.loc[len(statsDataFrame)] = row
+        
+        detailsDataFrame.loc[len(detailsDataFrame)] = game.to_details()
+
+    statsDataFrame.to_csv('Stats.csv', index = False)
+    detailsDataFrame.to_csv('Details.csv', index = False)
 
 # My Classes
 class Game:
