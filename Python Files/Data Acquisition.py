@@ -26,7 +26,7 @@ import pandas as pd
 
 # Threading libraries
 from threading import Thread, Lock
-threadLimit = 10 # Set thread limit
+threadLimit = 15 # Set thread limit
 mutex = Lock()
 isThreading = True # Set to false to run on single thread
 
@@ -35,15 +35,21 @@ no_games = 20 # Choose number of games to sample
 no_pages =  (no_games // 25) + 2
 max_games = 25 * (no_pages-1)
 
-isCollectingNewData = None
-
-url_steamChartsBase = 'https://steamcharts.com'
-io_path = f'../Data Analysis- Are F2P Games the Solomn Future/list_of_games_data.pkl'
-
 list_of_games = []
 list_game_url = []
 
+isCollectingNewData = None
+url_steamChartsBase = 'https://steamcharts.com'
+
+# I/O Vars
+dataset = '912 Samples'
+# io_path = f'../Data Analysis- Are F2P Games the Solomn Future/list_of_games_data.pkl'
+io_path = f'../Data Analysis- Are F2P Games the Solomn Future/Datasets/{dataset}/list_of_games_data.pkl'
+
+
 def main():
+
+    print(f'Current Dir: {os.getcwd()}')
 
     '''
     This function is used to determine if new data is going to be scraped, or loaded from local memory.
@@ -215,7 +221,7 @@ def threadCallee(num):
 
             # Open homepage 
             driver.get('https://store.steampowered.com/')
-            driver.minimize_window()
+            # driver.minimize_window()
 
             # Safely confirm presence of textbox before attempting interaction
             WebDriverWait(driver, 5).until(
@@ -250,7 +256,7 @@ def threadCallee(num):
             # Identify features
             isolateGameFeatures(game, driver)
 
-            time.sleep(4)
+            # time.sleep(4)
 
         except ValueError as e:
             print(f'Exception Occurred: {e}')
@@ -260,6 +266,7 @@ def threadCallee(num):
             continue
         except TimeoutException as e:
             print(f'Timeout on game: {gameTitle} (Thread #{num})\n{e}')
+            continue
         except StopIteration:
             print('End of list')
             driver.quit()
@@ -479,6 +486,13 @@ class Game:
     Returns a list of details for the dataframe showing the information of the game stored on Steam's website
     '''
     def to_details(self):
+        if self.price is None or '£' not in self.price:
+            self.price = '£0'
+
+        # Removing junk values identified post-data collection
+        self.tag_set.discard('')
+        self.tag_set.discard('+')
+
         return [self.title, self.price, self.has_single_player, self.has_online_pvp, self.has_online_co_op, self.has_in_app_purchase, [x for x in self.tag_set]]
 
 # Main Loop
