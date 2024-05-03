@@ -14,7 +14,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 # General libraries
 import pickle
@@ -26,12 +26,12 @@ import pandas as pd
 
 # Threading libraries
 from threading import Thread, Lock
-threadLimit = 10
+threadLimit = 10 # Set thread limit
 mutex = Lock()
-isThreading = True
+isThreading = True # Set to false to run on single thread
 
 # Global vars
-no_games = 250
+no_games = 20 # Choose number of games to sample
 no_pages =  (no_games // 25) + 2
 max_games = 25 * (no_pages-1)
 
@@ -52,7 +52,7 @@ def main():
 
     '''
     In this function, the basic details of each game are acquired: popularity ranking, game title, and game Steam Charts URL.
-    The URL is acquired due to a game URL being determined by an unpredictable, randomly assigned number.
+    The URL is acquired due to a game's URL being determined by an unpredictable, randomly assigned number.
     This information enables the automated scraping of the required data from SteamCharts, in the getGameStats() function.
     '''
     getSteamChartsGameList()
@@ -198,10 +198,10 @@ def threadCallee(num):
     # Setup chrome driver
     service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
 
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument(f'--user-data-dir=ChromeProfile/Profile{num}')
-    driver = webdriver.Chrome(service=service)
-
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     # For each game, get price (game name, price)
         
     while True:
@@ -215,6 +215,7 @@ def threadCallee(num):
 
             # Open homepage 
             driver.get('https://store.steampowered.com/')
+            driver.minimize_window()
 
             # Safely confirm presence of textbox before attempting interaction
             WebDriverWait(driver, 5).until(
@@ -257,6 +258,8 @@ def threadCallee(num):
         except NoSuchElementException as e:
             print(f'Exception Occurred: {e}')
             continue
+        except TimeoutException as e:
+            print(f'Timeout on game: {gameTitle} (Thread #{num})\n{e}')
         except StopIteration:
             print('End of list')
             driver.quit()
@@ -336,12 +339,24 @@ def getGameInfoFromSteam():
 
 def isolateGamePrice(game, driver):
         try:
+
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'game_purchase_price'))
+            )
+
             dirtyPrice = driver.find_element(By.CLASS_NAME, 'game_purchase_price')
             cleanPrice = dirtyPrice.text.lower().strip()
-        except NoSuchElementException:
-            dirtyPrice = driver.find_element(By.CLASS_NAME, 'discount_final_price')
-            cleanPrice = dirtyPrice.text.lower().strip()
-        
+        except TimeoutException:
+
+            try:
+                dirtyPrice = driver.find_element(By.CLASS_NAME, 'discount_final_price')
+                cleanPrice = dirtyPrice.text.lower().strip()
+            
+            except NoSuchElementException:
+                print(f'No price found for: {game.get_name}')
+                game.set_price('NULL')
+                return
+
         # Update Price
         game.set_price('£0' if 'free' in cleanPrice else cleanPrice)
 
@@ -369,6 +384,8 @@ def isolateGameFeatures(game, driver):
     for e in elements:
         if 'Multiplayer' in e.text:
             game.set_pvp()
+        
+        game.add_tag_to_set(e.text)
 
     return
         
@@ -390,7 +407,7 @@ def handleAgeVerificationPage(driver):
 def handleExport():
     # Create dataframes
     statsDataFrame = pd.DataFrame(columns = ['Game Title', 'Rank', 'Date', 'Avg. Players', 'Peak Players'])
-    detailsDataFrame = pd.DataFrame(columns= ['Game Title', 'Price', 'Single Player', 'Online PvP', 'Online Co-Op', 'In-App Purchases'])
+    detailsDataFrame = pd.DataFrame(columns= ['Game Title', 'Price', 'Single Player', 'Online PvP', 'Online Co-Op', 'In-App Purchases', 'Tags'])
         
     # Fill dataframes
     for game in list_of_games:
@@ -412,6 +429,7 @@ class Game:
         self.list_month = []
         self.list_avg = []
         self.list_peak = []
+        self.tag_set = set()
         self.price = None
         self.has_in_app_purchase = False
         self.has_online_pvp = False
@@ -442,6 +460,9 @@ class Game:
     def set_1p(self):
         self.has_single_player = True
 
+    def add_tag_to_set(self, tag):
+        self.tag_set.add(tag)
+
     '''
     Returns a nested list with each row containing the x-th value from each of the lists.
     Structure: Title, Rank, Month, Average Peak
@@ -458,7 +479,7 @@ class Game:
     Returns a list of details for the dataframe showing the information of the game stored on Steam's website
     '''
     def to_details(self):
-        return [self.title, self.price, self.has_single_player, self.has_online_pvp, self.has_online_co_op, self.has_in_app_purchase]
+        return [self.title, self.price, self.has_single_player, self.has_online_pvp, self.has_online_co_op, self.has_in_app_purchase, [x for x in self.tag_set]]
 
 # Main Loop
 if __name__ == '__main__':
