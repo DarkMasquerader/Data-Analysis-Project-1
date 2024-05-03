@@ -16,10 +16,10 @@ GitHub: https://github.com/semasuka/credit-card-approval-prediction-classificati
 - How to run
 
 ## Business Problem 
-A game development company wants to make a new game for the PC platform, but before starting development, the company would like to know the answer to the following question: 'What type of games are most successful?'.
+A game development company wants to make a new game for the PC platform.
+The company would like to know what type of games are most successful, providing the highest chance of developing a successful game.
 
-This work answers this question by generating a novel, large-scale dataset concerning the games on the Steam platform. 
-
+This work answers this question by generating a novel, large-scale dataset concerning the games available on the Steam platform. 
 This program and dataset is made available to the public for further use.
 
 ## Data Preparation and Acquisition
@@ -28,7 +28,7 @@ The dataset used for this project is generated using data from Steam[] and Steam
 The collected data was also cleaned and transformed in preparation for subsequent data analysis.
 
 ## Notable Techniques  
-**NOTE:** Teachnical techniques are appended with an asterisk 
+**NOTE:** Technical techniques are appended with an asterisk 
 - Bivariate data analsys 
 - Regression 
 
@@ -59,8 +59,11 @@ Success definitions
 - Recommendation is to...
 
 ## Limitations and Potential Improvements
-- Collecting further information on each game (genre)
+- Lack of information on revenue
+- Lack of information on purchase numbers
 - Collection of data across other gaming platforms (mobile, console etc.)
+- Does not take note if game was on discount
+- Scraper not identify price of game on steam page, occasionally (slightly inaccurate)
 
 ## How to Run
 
