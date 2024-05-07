@@ -43,13 +43,10 @@ url_steamChartsBase = 'https://steamcharts.com'
 
 # I/O Vars
 dataset = '912 Samples'
-# io_path = f'../Data Analysis- Are F2P Games the Solomn Future/list_of_games_data.pkl'
 io_path = f'../Data Analysis- Are F2P Games the Solomn Future/Datasets/{dataset}/list_of_games_data.pkl'
 
 
 def main():
-
-    print(f'Current Dir: {os.getcwd()}')
 
     '''
     This function is used to determine if new data is going to be scraped, or loaded from local memory.
