@@ -1,4 +1,4 @@
-# An Analysis: What is the recipe of a successful video game on PC?
+# An Analysis: What Type of Game Has the Highest Chance of Success in 2024?
 <!-- 
 Badges: https://shields.io/
 GitHub: https://github.com/semasuka/credit-card-approval-prediction-classification?tab=readme-ov-file
@@ -16,16 +16,18 @@ GitHub: https://github.com/semasuka/credit-card-approval-prediction-classificati
 - How to run
 
 ## Business Problem 
-A game development company wants to make a new game for the PC platform.
-The company would like to know what type of games are most successful, providing the highest chance of developing a successful game.
+A game development studio is looking to develop a new game for the PC platform.
+The studio would like to know what type of games are most successful, providing the studio highest chance of developing a successful game.
 
 This work answers this question by generating a novel, large-scale dataset concerning the games available on the Steam platform. 
 This program and dataset is made available to the public for further use.
 
 ## Data Preparation and Acquisition
-The dataset used for this project is generated using data from Steam[] and SteamCharts[], using *web scraping* and *website automation* alongside advanced programming techniques such as multi-threading and resource management (mutexes).
+The dataset used for this project is generated using data from Steam[] and SteamCharts[], using *web scraping* and *website automation*, alongside advanced programming techniques such as multi-threading and resource management (mutexes).
 
-The collected data was also cleaned and transformed in preparation for subsequent data analysis.
+The collected data is also cleaned and transformed in preparation for subsequent data analysis.
+
+The script responsible for data acquisition and preparation is `Data Acquisition.py`.
 
 ## Notable Techniques  
 **NOTE:** Technical techniques are appended with an asterisk 
@@ -59,8 +61,10 @@ Success definitions
 - Recommendation is to...
 
 ## Limitations and Potential Improvements
-- Lack of information on revenue
-- Lack of information on purchase numbers
+- Lack of information on:
+    - revenue
+    - purchase numbers
+    - Lead to using metrics biased towards multi-player games
 - Collection of data across other gaming platforms (mobile, console etc.)
 - Does not take note if game was on discount
 - Scraper not identify price of game on steam page, occasionally (slightly inaccurate)
