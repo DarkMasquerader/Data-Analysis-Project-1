@@ -27,11 +27,11 @@ import pandas as pd
 # Threading libraries
 from threading import Thread, Lock
 threadLimit = 15 # Set thread limit
-mutex = Lock()
 isThreading = True # Set to false to run on single thread
+mutex = Lock()
 
 # Global vars
-no_games = 20 # Choose number of games to sample
+no_games = 200 # Choose number of games to sample
 no_pages =  (no_games // 25) + 2
 max_games = 25 * (no_pages-1)
 
@@ -42,14 +42,20 @@ isCollectingNewData = None
 url_steamChartsBase = 'https://steamcharts.com'
 
 # I/O Vars
-dataset = '912 Samples'
-io_path = f'../Data Analysis- Are F2P Games the Solomn Future/Datasets/{dataset}/list_of_games_data.pkl'
-
+dataset = '912 Samples' # 912 - 244
+io_path = f'./Datasets/{dataset}/list_of_games_data.pkl'
 
 def main():
 
+    # Path Testing
+    # print(f'CWD: {os.getcwd()}')
+    # print(f'Path: {io_path}')
+    # print(f'Path: {os.path.exists(io_path)}')
+    # return
+
     '''
-    This function is used to determine if new data is going to be scraped, or loaded from local memory.
+    This function is used to determine if new data is going to be scraped, 
+    or if previously scraped data will be will be loaded from local memory.
     '''
     determineCollectNewData()
 
@@ -74,119 +80,11 @@ def main():
 
     # Read/write variables locally
     handleVariables()
-
+    
     # Export to .csv
     handleExport()
     
-    
-
-        
-# My Functions
-def handleVariables():
-    global list_of_games
-    if isCollectingNewData:
-        with open('list_of_games_data.pkl', 'wb') as f:
-            pickle.dump(list_of_games, f)
-    elif not isCollectingNewData:
-        with open(io_path, 'rb') as f:
-            list_of_games = pickle.load(f)
-    
-def determineCollectNewData():
-    global isCollectingNewData
-    if os.path.exists(io_path):
-        isCollectingNewData = False
-    else:
-        isCollectingNewData = True
-
-def getHTML(url):
-    page = requests.get(url)
-    return BeautifulSoup(page.text, "html")
-
-def getTableColumns(pageText):
-    dirtyTable = pageText.find('table')
-    dirtyHeaders = dirtyTable.find_all('th')
-    return dirtyTable, dirtyHeaders
-
-def getSteamChartsGameList():
-
-    # Base Case
-    if not isCollectingNewData:
-        return 
-
-    rankCounter = 1
-    for pageCounter in range(1, no_pages):
-
-        # Acquire HTML
-        url_steamChartsCurrent = f"{url_steamChartsBase}/top/p.{pageCounter}"
-        pageText_steamCharts = getHTML(url_steamChartsCurrent)
-
-        # Isolate table columns
-        dirtyTable, dirtyHeaders = getTableColumns(pageText_steamCharts)
-
-        # Acquire: Rank, Name, URL
-        tableRows = dirtyTable.find_all('tr')
-        for row in tableRows[1:]: #tableRows[0] contains column titles
-            linkTag = row.find('a')
-            link = linkTag.get('href') # Isolate URL component for next for loop
-            gameTitle = linkTag.text.strip() # Isolate game title
-            list_game_url.append((rankCounter,gameTitle, link))
-            rankCounter += 1
-
-def getGameStats():
-
-    # Base Case
-    if not isCollectingNewData:
-        return 
-
-    for gameInfo in list_game_url:
-        
-        # Create Game Object 
-        tempGameObject = Game(gameInfo[1], gameInfo[0])
-
-        # Acquire HTML
-        url_steamChartGame = f"{url_steamChartsBase}{gameInfo[2]}"
-        pageText_steamChartGame = getHTML(url_steamChartGame)
-
-        # Isolate table columns
-        dirtyTable, dirtyHeaders = getTableColumns(pageText_steamChartGame)
-        
-        # Get row data
-        tableRows = dirtyTable.find_all('tr')
-        for row in tableRows[1:]: #tableRows[0] contains column titles
-            row_data = row.find_all('td')
-            list_of_row_data = [data.text.strip() for data in row_data]
-
-            # Add data to Game object 
-            tempGameObject.add_entry(list_of_row_data[0], list_of_row_data[1], list_of_row_data[4]) 
-
-        # Add Game object to list 
-        list_of_games.append(tempGameObject)
-
-def getGameInfoFromSteamThreaded():
-    
-    # Base Case - Are reading in or collecting new data?
-    if not isCollectingNewData:
-        return 
-
-    # Recording running time
-    start_time = time.time()
-
-    global threadGameList
-    threadGameList = iter(list_of_games)
-
-    _list = []
-    for temp in range(0,threadLimit):
-        _ = Thread(target = threadCallee, args = [temp,] )
-        _.start()
-        _list.append(_)
-
-    for _ in _list:
-        _.join()
-
-    # Display running time
-    end_time = time.time()
-    print(f'Steam Runtime: {end_time-start_time}')
-
+# Thread Functions 
 threadGameCounter = 0
 def getNextGame():
     with mutex:
@@ -268,6 +166,62 @@ def threadCallee(num):
             print('End of list')
             driver.quit()
             break
+
+def getGameInfoFromSteamThreaded():
+    
+    # Base Case - Are reading in or collecting new data?
+    if not isCollectingNewData:
+        return 
+
+    # Recording running time
+    start_time = time.time()
+
+    global threadGameList
+    threadGameList = iter(list_of_games)
+
+    _list = []
+    for temp in range(0,threadLimit):
+        _ = Thread(target = threadCallee, args = [temp,] )
+        _.start()
+        _list.append(_)
+
+    for _ in _list:
+        _.join()
+
+    # Display running time
+    end_time = time.time()
+    print(f'Steam Runtime: {end_time-start_time}')
+
+# Scraping Functions
+def getGameStats():
+
+    # Base Case
+    if not isCollectingNewData:
+        return 
+
+    for gameInfo in list_game_url:
+        
+        # Create Game Object 
+        tempGameObject = Game(gameInfo[1], gameInfo[0])
+
+        # Acquire HTML
+        url_steamChartGame = f"{url_steamChartsBase}{gameInfo[2]}"
+        pageText_steamChartGame = getHTML(url_steamChartGame)
+
+        # Isolate table columns
+        dirtyTable, dirtyHeaders = getTableColumns(pageText_steamChartGame)
+        
+        # Get row data
+        tableRows = dirtyTable.find_all('tr')
+        for row in tableRows[1:]: #tableRows[0] contains column titles
+            row_data = row.find_all('td')
+            list_of_row_data = [data.text.strip() for data in row_data]
+
+            # Add data to Game object 
+            tempGameObject.add_entry(list_of_row_data[0], list_of_row_data[1], list_of_row_data[4]) 
+
+        # Add Game object to list 
+        list_of_games.append(tempGameObject)
 
 def getGameInfoFromSteam():
 
@@ -364,6 +318,114 @@ def isolateGamePrice(game, driver):
         # Update Price
         game.set_price('£0' if 'free' in cleanPrice else cleanPrice)
 
+def getHTML(url):
+    page = requests.get(url)
+    return BeautifulSoup(page.text, "html")
+
+def getSteamChartsGameList():
+
+    # Base Case
+    if not isCollectingNewData:
+        return 
+
+    rankCounter = 1
+    for pageCounter in range(1, no_pages):
+
+        # Acquire HTML
+        url_steamChartsCurrent = f"{url_steamChartsBase}/top/p.{pageCounter}"
+        pageText_steamCharts = getHTML(url_steamChartsCurrent)
+
+        # Isolate table columns
+        dirtyTable, dirtyHeaders = getTableColumns(pageText_steamCharts)
+
+        # Acquire: Rank, Name, URL
+        tableRows = dirtyTable.find_all('tr')
+        for row in tableRows[1:]: #tableRows[0] contains column titles
+            linkTag = row.find('a')
+            link = linkTag.get('href') # Isolate URL component for next for loop
+            gameTitle = linkTag.text.strip() # Isolate game title
+            list_game_url.append((rankCounter,gameTitle, link))
+            rankCounter += 1
+
+def handleAgeVerificationPage(driver):
+    if 'agecheck' in driver.current_url:
+        
+        # Select birth year as 2000
+        dropdown = driver.find_element(By.ID, 'ageYear')
+        select = Select(dropdown)
+        select.select_by_value('2000')
+
+        # Click 'View Page' button
+        button = driver.find_element(By.ID, 'view_product_page_btn')
+        button.click()
+
+        # Wait for page to load
+        time.sleep(2)
+
+# I/O Functions
+def handleVariables():
+    global list_of_games
+    if isCollectingNewData:
+        with open('list_of_games_data.pkl', 'wb') as f:
+            pickle.dump(list_of_games, f)
+    elif not isCollectingNewData:
+        with open(io_path, 'rb') as f:
+            list_of_games = pickle.load(f)
+    
+def determineCollectNewData():
+    global isCollectingNewData
+    if os.path.exists(io_path):
+        isCollectingNewData = False
+    else:
+        isCollectingNewData = True
+
+def handleExport():
+    # Create dataframes
+    statsDataFrame = pd.DataFrame(columns = ['Game Title', 'Rank', 'Date', 'Avg. Players', 'Peak Players'])
+    detailsDataFrame = pd.DataFrame(columns= ['Game Title', 'Price', 'Single Player', 'Online PvP', 'Online Co-Op', 'In-App Purchases', 'Tags'])
+        
+    my_global_tag_set = set()
+
+    # Fill dataframes
+    for game in list_of_games:
+
+        for row in game.to_stats_list():
+            statsDataFrame.loc[len(statsDataFrame)] = row
+        
+        detailsDataFrame.loc[len(detailsDataFrame)] = game.to_details()
+
+        # Build list of unique tags
+        my_global_tag_set.update(game.get_tags())
+    
+    # Create and fill tags dataframe
+    list_of_unique_tags = list(my_global_tag_set) # Placed in list to guarantee order
+    dataframe_columns = ['Game Title']
+    dataframe_columns += list_of_unique_tags
+    tagsDataFrame = pd.DataFrame(columns=dataframe_columns)
+    for game in list_of_games:
+        row = [] # Row to add to dataframe
+        row.append(game.get_name()) 
+        cur_game_tags = game.get_tags()
+
+        # For each tag, check if it's present
+        for tag in list_of_unique_tags: 
+            if tag in cur_game_tags:
+                row.append(True)
+            else:
+                row.append(False)
+        
+        tagsDataFrame.loc[len(tagsDataFrame)] = row
+
+    statsDataFrame.to_csv('Stats.csv', index = False)
+    detailsDataFrame.to_csv('Details.csv', index = False)
+    tagsDataFrame.to_csv('Tags.csv', index=False)
+
+# Data Manipulation Functions
+def getTableColumns(pageText):
+    dirtyTable = pageText.find('table')
+    dirtyHeaders = dirtyTable.find_all('th')
+    return dirtyTable, dirtyHeaders
+
 def isolateGameFeatures(game, driver):
     list_of_features = ('In-App Purchases', 'Online PvP', 'Online Co-op', 'Single-player', 'Cross-Platform Multiplayer')
 
@@ -393,39 +455,12 @@ def isolateGameFeatures(game, driver):
 
     return
         
-def handleAgeVerificationPage(driver):
-    if 'agecheck' in driver.current_url:
-        
-        # Select birth year as 2000
-        dropdown = driver.find_element(By.ID, 'ageYear')
-        select = Select(dropdown)
-        select.select_by_value('2000')
-
-        # Click 'View Page' button
-        button = driver.find_element(By.ID, 'view_product_page_btn')
-        button.click()
-
-        # Wait for page to load
-        time.sleep(2)
-
-def handleExport():
-    # Create dataframes
-    statsDataFrame = pd.DataFrame(columns = ['Game Title', 'Rank', 'Date', 'Avg. Players', 'Peak Players'])
-    detailsDataFrame = pd.DataFrame(columns= ['Game Title', 'Price', 'Single Player', 'Online PvP', 'Online Co-Op', 'In-App Purchases', 'Tags'])
-        
-    # Fill dataframes
-    for game in list_of_games:
-
-        for row in game.to_stats_list():
-            statsDataFrame.loc[len(statsDataFrame)] = row
-        
-        detailsDataFrame.loc[len(detailsDataFrame)] = game.to_details()
-
-    statsDataFrame.to_csv('Stats.csv', index = False)
-    detailsDataFrame.to_csv('Details.csv', index = False)
-
 # My Classes
 class Game:
+
+    '''
+    This class is used to represent each game included in this analysis, and provides an easy means of exporting this data to a DataFrame and .csv.
+    '''
 
     def __init__(self, name, rank):
         self.title = name
@@ -466,6 +501,9 @@ class Game:
 
     def add_tag_to_set(self, tag):
         self.tag_set.add(tag)
+
+    def get_tags(self):
+        return self.tag_set
 
     '''
     Returns a nested list with each row containing the x-th value from each of the lists.
