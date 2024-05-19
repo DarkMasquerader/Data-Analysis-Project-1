@@ -97,7 +97,8 @@ def threadCallee(num):
     print(f'Thread #{num} started')
     
     # Setup chrome driver
-    service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
+    service = Service(executable_path=f'./chromedriver')
+    # service = Service(executable_path=f'../Data Analysis- Are F2P Games the Solomn Future/chromedriver')
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
@@ -180,11 +181,13 @@ def getGameInfoFromSteamThreaded():
     threadGameList = iter(list_of_games)
 
     _list = []
+    # Initialise threads
     for temp in range(0,threadLimit):
         _ = Thread(target = threadCallee, args = [temp,] )
         _.start()
         _list.append(_)
 
+    # Join threads
     for _ in _list:
         _.join()
 
@@ -410,9 +413,9 @@ def handleExport():
         # For each tag, check if it's present
         for tag in list_of_unique_tags: 
             if tag in cur_game_tags:
-                row.append(True)
+                row.append(1)
             else:
-                row.append(False)
+                row.append(0)
         
         tagsDataFrame.loc[len(tagsDataFrame)] = row
 
@@ -461,7 +464,6 @@ class Game:
     '''
     This class is used to represent each game included in this analysis, and provides an easy means of exporting this data to a DataFrame and .csv.
     '''
-
     def __init__(self, name, rank):
         self.title = name
         self.rank = rank
@@ -513,9 +515,31 @@ class Game:
     def to_stats_list(self):
         self.return_list = []
         for pos in range(len(self.list_month)):
-            self.return_list.append([self.title, self.rank, self.list_month[pos], self.list_avg[pos], self.list_peak[pos]])
+            self.return_list.append([self.title, self.rank, self.convert_to_date(self.list_month[pos]), self.list_avg[pos], self.list_peak[pos]])
         
         return self.return_list
+    
+    month_to_number = {
+        'January': 1,
+        'February': 2,
+        'March': 3,
+        'April': 4,
+        'May': 5,
+        'June': 6,
+        'July': 7,
+        'August': 8,
+        'September': 9,
+        'October': 10,
+        'November': 11,
+        'December': 12
+    }
+    def convert_to_date(self, date):
+        split_date = date.split(' ')
+        
+        if len(split_date) == 3: # Value: Last 30 Days
+            return '5-2024'
+        else:
+            return f'{Game.month_to_number[split_date[0]]}-{split_date[1]}'
 
     '''
     Returns a list of details for the dataframe showing the information of the game stored on Steam's website
