@@ -1,4 +1,4 @@
-# An Analysis: What Type of Game Has the Highest Chance of Success in 2024?
+# A Recipe for Success: An Analysis on the Most Popular Steam Games
 <!-- 
 Badges: https://shields.io/
 GitHub: https://github.com/semasuka/credit-card-approval-prediction-classification?tab=readme-ov-file
@@ -15,11 +15,19 @@ GitHub: https://github.com/semasuka/credit-card-approval-prediction-classificati
 - [Limitations and Potential Improvements](#limitations-and-potential-improvements)
 - How to run
 
+## Project Focus 
+- Covers all stages of DA 
+- Strong points is 
+    - Data collection 
+    - Data processing 
+    - Python
+- More details found...
+
 ## Business Problem 
-A game development studio is looking to develop a new game for the PC platform.
+For this project, I consider a hypothetical game development studio that is looking to develop a new game for the PC platform.\
 The studio would like to know what type of games are most successful, providing the studio highest chance of developing a successful game.
 
-This work answers this question by generating a novel, large-scale dataset concerning the games available on the Steam platform. 
+This work answers this question by generating a novel, large-scale dataset (first-hand) concerning the games available on the Steam platform. 
 This program and dataset is made available to the public for further use.
 
 ## Data Preparation and Acquisition
@@ -31,15 +39,13 @@ The script responsible for data acquisition and preparation is `Data Acquisition
 
 ## Notable Techniques  
 **NOTE:** Technical techniques are appended with an asterisk 
-- Bivariate data analsys 
-- Regression 
-
 - Website scraping *
 - Website automation (aka. botting) *
 - Multi-threading and resource management *
 
 ## Tech Stack 
-- Python (Data acquisition and processing)
+- Python (Data acquisition, processing, visualisation)
+- Tableau
 - MySQL 
 
 ## Results at a Glance
@@ -56,6 +62,14 @@ Success definitions
         - Lasting x years with more than x% of initial population 
  -->
 
+## Explore the Notebook
+
+## Explore the Dashboard (Tableau) 
+- Purpose of dashboard is to demonstrate proficiency
+- I have optimised...
+- Actions...
+- Filters in logical order...
+
 ## Insights and Recommendations
 - Based on the analysis of this project, we found that...
 - Recommendation is to...
@@ -69,6 +83,4 @@ Success definitions
 - Does not take note if game was on discount
 - Scraper not identify price of game on steam page, occasionally (slightly inaccurate)
 
-## How to Run
 
-### Explore the Notebook
