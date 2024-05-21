@@ -1,5 +1,6 @@
 # Tableau Dashboard
 The purpose of this Tableau dashboard is to demonstrate my proficiency with this tool, mimicking the visualisations made in the Jupyter Notebook.
+Tableau will play a larger part in future projects.
 
 The Tableau Dashboard shown below is accessible in `Project 1.twbx`.
 ![](images/Tableau%20Dashboard.gif)
@@ -9,9 +10,9 @@ The Tableau Dashboard shown below is accessible in `Project 1.twbx`.
 ### Data Source Filter
 Records for a number of games go as far back as 2012.
 
-However, for this analysis, such historical data is not required and has been removed with a data source filter to improve performance, avoiding the unnecessary processing of unhelpful and unnecessary data.
+However, for this analysis, such historical data is not required and has been removed using a data source filter to improve performance.
 
-If such data is later required by the client, the filter can be adjusted.
+If such data is later required by the client, the filter can easily be adjusted.
 
 ![](images/Data%20Source%20Filter.png)
 
