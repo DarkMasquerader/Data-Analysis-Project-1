@@ -1,8 +1,4 @@
 # A Recipe for Success: An Analysis of the Most Popular Steam Games
-<!-- 
-Badges: https://shields.io/
-GitHub: https://github.com/semasuka/credit-card-approval-prediction-classification?tab=readme-ov-file
--->
 
 ## Table of Contents 
 - [Project Focus](#project-focus)
@@ -40,7 +36,6 @@ The script responsible for data acquisition and preparation is `Data Acquisition
     - Data Processing: Data Transformation & Handling
     - Data Visualisation: Numpy, Matplotlib
 - [Tableau](Tableau/)
-- MySQL `TO DO`
 
 ## Results at a Glance
 Distribution of the top 10 tags (categories) of the top 100 games.
