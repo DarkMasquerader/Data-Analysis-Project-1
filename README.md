@@ -23,7 +23,7 @@ For this project, a hypothetical game development studio that is looking to deve
 
 The studio would like to know what types of games are most successful, thus providing the studio highest chance of developing a successful game.
 
-This work answers this question by generating a novel, large-scale dataset (first-hand) concerning the games available on the Steam platform and subsequently conducting an analysis.\
+This work answers this question by generating a novel, large-scale dataset (first-hand) concerning the games available on the Steam platform and subsequently conducting an analysis.
 
 The data acquisition Python script and dataset are made available to the public for further use.
 
