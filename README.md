@@ -1,34 +1,22 @@
 # A Recipe for Success: An Analysis of the Most Popular Steam Games
 
 ## Table of Contents 
-- [Project Focus](#project-focus)
 - [Business Problem](#business-problem)
-- [Data Preparation and Acquisition](#data-preparation-and-acquisition)
 - [Tech Stack](#tech-stack)
+- [Project Focus](#project-focus)
+- [Data Preparation and Acquisition](#data-preparation-and-acquisition)
 - [Results at a Glance](#results-at-a-glance)
 - [Insights & Recommendations](#insights-and-recommendations)
 - [Limitations and Potential Improvements](#limitations-and-potential-improvements)
 
-## Project Focus 
-This project covers all stages of the data analysis process, with the strong points of this project being the *data collection* and *data processing* stages.
-
-In-depth details on these stages can be found in the [Python](Python%20Files/) directory.
-
 ## Business Problem 
 For this project, a hypothetical game development studio that is looking to develop a new game for the PC platform is considered.
 
-The studio would like to know what types of games are most successful, thus providing the studio highest chance of developing a successful game.
+The studio would like to know what types of games are most successful, thus providing the studio with the highest chance of developing a successful game.
 
-This work answers this question by generating a novel, large-scale dataset (first-hand) concerning the games available on the Steam platform and subsequently conducting an analysis.
+This project answers this question by generating a novel, large-scale dataset (first-hand) concerning the games available on the Steam platform and subsequently conducting an analysis.
 
 The data acquisition Python script and dataset are made available to the public for further use.
-
-## Data Preparation and Acquisition
-The dataset used for this project is generated using data from [Steam](https://store.steampowered.com/) and [SteamCharts](https://steamcharts.com/).
-
-The collected data is also cleaned and transformed in preparation for subsequent data analysis.
-
-The script responsible for data acquisition and preparation is `Data Acquisition.py`, which can be found [here](Python%20Files/Data%20Acquisition/).
 
 ## Tech Stack 
 - [Python](Python%20Files/)
@@ -37,6 +25,18 @@ The script responsible for data acquisition and preparation is `Data Acquisition
     - Data Visualisation: Numpy, Matplotlib
 - [Tableau](Tableau/)
 
+## Project Focus 
+This project covers all stages of the data analysis process, with the strong points of this project being the *data collection* and *data processing* stages.
+
+In-depth details on these stages can be found in the [Python](Python%20Files/) directory.
+
+## Data Preparation and Acquisition
+The dataset used for this project is generated using data from [Steam](https://store.steampowered.com/) and [SteamCharts](https://steamcharts.com/).
+
+The collected data is also cleaned and transformed in preparation for subsequent data analysis.
+
+The script responsible for data acquisition and preparation is `Data Acquisition.py`, which can be found [here](Python%20Files/Data%20Acquisition/).
+
 ## Results at a Glance
 Distribution of the top 10 tags (categories) of the top 100 games.
 ![](images/Top%20Tags.png)
@@ -44,16 +44,16 @@ Distribution of the top 10 tags (categories) of the top 100 games.
 A scatter plot visualising the relationship between the price of a game and its rank.
 ![](images/Price%20x%20Ranking.png)
 
-A line plot visualising the distribution of payment models of the top 100 games over two years.
+A line plot visualising the distribution of payment models of the top 100 games over the last two years.
 ![](images/Pricing%20Distribution%20Over%20Time.png)
 
 ## Explore the Notebook
-The Jupyter notebook used to facilitate data analysis is provided [here](Python%20Files/Jupyter%20Notebook/).
+The Jupyter notebook used to facilitate data analysis is provided [here](Python%20Files/Jupyter%20Notebook/My_Notebook.ipynb).
 
 The notebook has been designed to be as dynamic and interactive as possible, adjusting figures and data structures to accommodate changes in the controllable variables.
 
 ## Explore the Dashboard (Tableau) 
-A Tableau dashboard has been implemented to demonstrate my proficiency and knowledge of this tool.\
+An interactive Tableau dashboard has been implemented to present the findings of this research project, as well as to demonstrate proficiency and knowledge of this tool.\
 For further details and to view the dashboard, go to the [Tableau](Tableau/) directory.
 
 ## Insights and Recommendations
