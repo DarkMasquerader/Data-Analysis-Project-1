@@ -8,7 +8,7 @@ This directory contains three files, `chromedriver`, `Data Acquisition.py`, and 
 `MyGameClass.py` contains the class used to handle the data for each game included in the analysis.
 
 ## Script Structure
-The main loop is well-commented, providing a high-level explanation of the script.
+The main loop is well-commented, providing a high-level explanation of the script.\
 The main loop is included in-line, below.
 
 ```Python
