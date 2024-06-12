@@ -1,5 +1,5 @@
 # Tableau Dashboard
-![](images/Tableau%20Dashboard.gif)
+![](images/Tableau%20Dashboard.gif)\
 The Tableau Dashboard shown above is accessible in `Project 1.twbx`.
 
 ## Optimisations
