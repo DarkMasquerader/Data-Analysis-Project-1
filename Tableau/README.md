@@ -1,6 +1,6 @@
 # Tableau Dashboard
 ![](images/Tableau%20Dashboard.gif)
-The Tableau Dashboard shown below is accessible in `Project 1.twbx`.
+The Tableau Dashboard shown above is accessible in `Project 1.twbx`.
 
 ## Optimisations
 
