@@ -1,9 +1,6 @@
 # Tableau Dashboard
-The purpose of this Tableau dashboard is to demonstrate my proficiency with this tool, mimicking the visualisations made in the Jupyter Notebook.
-Tableau will play a larger part in future projects.
-
-The Tableau Dashboard shown below is accessible in `Project 1.twbx`.
 ![](images/Tableau%20Dashboard.gif)
+The Tableau Dashboard shown above is accessible in `Project 1.twbx`.
 
 ## Optimisations
 
